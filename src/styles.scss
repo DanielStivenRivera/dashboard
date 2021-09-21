@@ -1,1 +1,66 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$dashboard-front-primary: mat.define-palette(mat.$indigo-palette);
+$dashboard-front-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$dashboard-front-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$dashboard-front-theme: mat.define-light-theme((
+  color: (
+    primary: $dashboard-front-primary,
+    accent: $dashboard-front-accent,
+    warn: $dashboard-front-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($dashboard-front-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.container {
+  display: flex;
+  width: 70%;
+  height: 95vh;
+  position: relative;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  overflow: unset;
+
+  form {
+      justify-content: center;
+      align-items: center;
+      min-width: 300px;
+      width:  calc(max-content + 100px);
+      height: calc(max-content + 100px);
+      padding: 10px;
+      min-height: max-content;
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+      background-color: #7abcfab4;
+  }
+}

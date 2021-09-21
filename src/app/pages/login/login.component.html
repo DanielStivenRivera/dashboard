@@ -1,0 +1,18 @@
+<div class="container">
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+        <h4>Iniciar Sesión</h4>
+        <mat-form-field apparence="fill">
+            <mat-label>Correo</mat-label>
+            <input matInput name="email" required ngModel placeholder="Correo">
+        </mat-form-field>
+        <br>
+        <mat-form-field apparence="fill">
+            <mat-label>Contraseña</mat-label>
+            <input matInput name="password" required ngModel type="password" placeholder="Contraseña">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button>Iniciar Sesión</button>
+        <label>ó</label>
+        <a [routerLink]="['/register']">Registrarse</a>
+    </form>
+</div>

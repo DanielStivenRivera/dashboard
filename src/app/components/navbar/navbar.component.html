@@ -1,0 +1,71 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar><label>{{name}}</label></mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item (click)="addTask()">Agregar <mat-icon>add</mat-icon></a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Dashboard</span>
+      <button mat-button color="accent" type="button" (click)="logout()" style="margin-left: auto; margin-right: 5px;">Logout</button>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    
+
+    <div *ngIf="isCreating; then create else showData"></div>
+    <ng-template #showData>
+      <table mat-table [dataSource]="tasks" class="mat-elevation-z8">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let element">{{element.title}}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">{{element.description}}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon attr.name="{{element._id}}" (click)="deleteTask($event)" class="icon-button">delete</mat-icon>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+  </ng-template>
+  <ng-template #create>
+    <div class="container" >
+      <form #Form="ngForm" (ngSubmit)="createTask(Form)">
+          <h4>Crear Tarea</h4>
+          <mat-form-field apparence="fill">
+              <mat-label>Titulo</mat-label>
+              <input matInput name="title" required ngModel placeholder="Titulo">
+          </mat-form-field>
+          <br>
+          <mat-form-field apparence="fill">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput name="desc" required ngModel rows="12" cols="30"></textarea>
+          </mat-form-field>
+          <br>
+          <button mat-raised-button>Crear</button>
+          <br>
+          <button mat-raised-button type="button"  (click)="cancelTask()">Cancelar</button>
+      </form>
+    </div>
+  </ng-template>
+  
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
