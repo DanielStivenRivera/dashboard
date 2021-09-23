@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { CreateTaskDTO } from '../models/TaskDTO';
 import { CreateUserDTO } from '../models/user.model';
 import { JwtHelperService }  from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class UserService {
 
   private URI = "https://nest-dashboard.herokuapp.com/";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(userData : any) {
     return this.http.post(this.URI + 'user/login', userData);
@@ -41,6 +42,7 @@ export class UserService {
 
   logout() {
     localStorage.removeItem('access_token');
+    this.router.navigateByUrl('login');
   }
 
   getTask(id: any) {

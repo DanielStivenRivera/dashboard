@@ -1,1 +1,55 @@
 <app-navbar></app-navbar>
+<div class="sidebar">
+    <div class="sidebar-burger" data-target="sidebarContent" (click)="openSidebar($event)">
+        <mat-icon>arrow_forward_ios</mat-icon>
+    </div>
+    <div id="sidebarContent" class="sidebar-content">
+        <h3>{{name}}</h3>
+        <a type="button" class="button" (click)="addTask()">Crear</a>
+    </div>
+</div>
+
+<!--content goes here-->
+<div class="dashboard">
+    <div *ngIf="isCreating; then create else showData"></div>
+    <ng-template #showData>
+        <table mat-table [dataSource]="tasks" class="mat-elevation-z8">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element">{{element.description}}</td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon style="cursor: pointer;" attr.name="{{element._id}}" (click)="deleteTask($event)" class="icon-button">delete</mat-icon>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </ng-template>
+    <ng-template #create>
+        <div class="container" >
+          <form #Form="ngForm" (ngSubmit)="createTask(Form)">
+              <h4>Crear Tarea</h4>
+              <mat-form-field apparence="fill">
+                  <mat-label>Titulo</mat-label>
+                  <input matInput name="title" required ngModel placeholder="Titulo">
+              </mat-form-field>
+              <br>
+              <mat-form-field apparence="fill">
+                  <mat-label>Descripción</mat-label>
+                  <textarea matInput name="desc" required ngModel rows="12" cols="30"></textarea>
+              </mat-form-field>
+              <br>
+              <button mat-raised-button>Crear</button>
+              <br>
+              <button mat-raised-button type="button"  (click)="cancelTask()">Cancelar</button>
+          </form>
+        </div>
+      </ng-template>
+</div>

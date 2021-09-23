@@ -1,20 +1,138 @@
-table {
-    width: 100%;
-  }
 
-.icon-button {
-    cursor: pointer;
-    &:hover{
-        background-color: #a7a7a7;
-        transition: all ease-in-out 0.2s;
+
+.navbar {
+    z-index: 6;
+    display: flex;
+    background-color: #0014645f;
+    height: 4rem;
+    width: 100vw;
+    position: fixed;
+    top: 0px;
+    border-bottom: solid 2px #fff;
+    align-items: center;
+    border-bottom: 2px solid #91919198;
+    
+  
+    .navbar-logo {
+      margin-left: 5px;
+      font-size: 20px;
+      color: #c9c9c9;
     }
-}
-
-#table-container {
-    visibility: visible;
-}
-
-.hide {
-    visibility: hidden !important;
-}
-
+  
+    
+  
+    .navbar-burger {
+      padding: 3px;
+      content: "";
+      display: none;
+      flex-direction: column;
+      width: 30px;
+      height: 30px;
+      border: solid 2px #fff;
+      position: absolute;
+      right: 5px;
+      cursor: pointer;
+  
+      div {
+        margin: auto;
+        width: 20px;
+        height: 2px;
+        background-color: #fff;
+        pointer-events: none;
+      }
+    }
+  
+    .navbar-menu {
+      display: flex;
+      width: 100%;
+      padding: 10px;
+      position: relative;
+      .navbar-start {
+        position: relative;
+        margin-left: 10px;
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        .navbar-item {
+          cursor: pointer;
+          color: #fff;
+          position: relative;
+          padding: 8px;
+          text-decoration: none;
+          text-transform: uppercase;
+          font-size: 18px;
+  
+          &::after {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 0%;
+            background-color: #fff;
+            display: block;
+            transition: all ease-in-out 0.2s;
+          }
+          &:hover {
+  
+            &::after {
+              width: 75%;
+            }
+          }
+        }
+      }
+      .navbar-end {
+        display: flex;
+        position: relative;
+        margin: auto 5px auto auto;
+        
+        button {
+          width: max-content;
+          cursor: pointer;
+          position: relative;
+          padding: 5px;
+          font-size: 18px;
+        }
+  
+      }
+  
+    }
+  }
+  
+  @media screen and (max-width: 800px) {
+    .navbar {
+      .navbar-burger {
+        display: flex;
+      }
+      .navbar-menu {
+        display: none;
+      }
+  
+      .is-active {
+        display: flex !important;
+        flex-direction: column;
+        position: absolute;
+        top: 4rem;
+        right: 0;
+        background-color: #001464;
+        width: 50%;
+        .navbar-start {
+          flex-direction: column;
+          margin: auto;
+          width: 100%;
+  
+          .navbar-item {
+            width: max-content;
+            margin: 0;
+          }
+        }
+  
+        .navbar-end {
+          flex-direction: column;
+  
+          border-top: #3c3c3c solid 2px;
+          width: 100%;
+          margin: 0;
+        }
+  
+      }
+    }
+  }

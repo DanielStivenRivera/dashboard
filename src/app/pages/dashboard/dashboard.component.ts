@@ -1,8 +1,6 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -12,41 +10,68 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private userService: UserService, private breakpointObserver: BreakpointObserver ) {  }
+  name = "";
+  tasks: any = [];
+  isCreating = false;
+  displayedColumns: string[] = ["title", "description", "action"];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+    
+    ngOnInit() {
+      this.userService.getUserProfile().subscribe(res => {
+        this.name = Object.values(res)[1];
+      }, err => {
 
-  ngOnInit(): void {
+      })
+      this.getTasks();
+    }
+
+  constructor( private router: Router, private userService: UserService) { }
+
+
+  openSidebar(e : Event) {
+    const $target = (document.querySelector("#sidebarContent")) as HTMLElement ;
+    $target.classList.toggle('open');
+  }
+
+  getTasks() {
     this.userService.GetUserTask().subscribe(res => {
-      console.log(res);
-    }, err => {
-
+      this.tasks = res;
     })
   }
 
-  logout() {
-    console.log('logout');
-    localStorage.removeItem('access_token');
-    window.location.reload();
+
+  deleteTask(event: Event) {
+    const target = (event.target as HTMLElement);
+    const taskId = target.getAttribute('name');
+    console.log(taskId);
+    this.userService.deleteTask(taskId).subscribe(res => {
+      alert('task has been deleted');
+      this.getTasks();
+    })
   }
 
-  payload() {
-    this.userService.GetUserTask();
+  addTask() {
+    this.isCreating = true;
+    const $target = (document.querySelector("#sidebarContent")) as HTMLElement ;
+    $target.classList.toggle('open');
   }
 
-  createTask(form: NgForm) {
-    this.userService.createtask(form.value.title, form.value.description)
+  cancelTask() {
+    this.isCreating = false;
+  }
+
+  createTask(form : NgForm) {
+    const title = form.value.title;
+    const desc = form.value.desc;
+    this.userService.createtask(title, desc)
       .subscribe(res => {
-        alert("task has been created")
-      },
-      err => {
-        alert("cant be create task")
-      }
-      )
+        form.reset();
+        this.getTasks();
+        this.cancelTask();
+      })
   }
+  
 
+
+  
 }

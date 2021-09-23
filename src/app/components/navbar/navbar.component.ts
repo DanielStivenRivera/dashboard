@@ -16,71 +16,28 @@ export class NavbarComponent implements OnInit {
 
   
 
-  name = "Daniel Rivera";
-  tasks: any = [];
-  isCreating = false;
-  selectedTask: string | null = "";
-  displayedColumns: string[] = ["title", "description", "action"];
-  editData : any = [];
+  
   isEditing = false;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
     
     ngOnInit() {
-      this.userService.getUserProfile().subscribe(res => {
-        this.name = Object.values(res)[1];
-      }, err => {
-
-      })
-      this.getTasks();
+      
     }
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService: UserService) { }
+  constructor( private router: Router, private userService: UserService) { }
 
 
-  getTasks() {
-    this.userService.GetUserTask().subscribe(res => {
-      this.tasks = res;
-    })
+  toggle(e: Event) {
+    const burger = e.target as HTMLElement;
+    const target: any = burger.dataset.target;
+    const $target = (document.querySelector('#'+ target)) as HTMLElement ;
+    $target.classList.toggle('is-active'); 
   }
 
   logout() {
-    localStorage.removeItem('access_token');
-    this.router.navigateByUrl("/login");
+    this.userService.logout();
   }
 
-
-  deleteTask(event: Event) {
-    const target = (event.target as HTMLElement);
-    const taskId = target.getAttribute('name');
-    console.log(taskId);
-    this.userService.deleteTask(taskId).subscribe(res => {
-      alert('task has been deleted');
-      this.getTasks();
-    })
-  }
-
-  addTask() {
-    this.isCreating= true;
-  }
-
-  cancelTask() {
-    this.isCreating = false;
-  }
-
-  createTask(form : NgForm) {
-    const title = form.value.title;
-    const desc = form.value.desc;
-    this.userService.createtask(title, desc)
-      .subscribe(res => {
-        form.reset();
-        this.getTasks();
-        this.cancelTask();
-      })
-  }
+  
 
 }
