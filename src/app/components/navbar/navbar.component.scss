@@ -28,11 +28,12 @@
       flex-direction: column;
       width: 30px;
       height: 30px;
-      border: solid 2px #fff;
+      color: #fff;
       position: absolute;
       right: 5px;
       cursor: pointer;
-  
+      font-size: 25px;
+
       div {
         margin: auto;
         width: 20px;

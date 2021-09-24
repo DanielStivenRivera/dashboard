@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   tasks: any = [];
   isCreating = false;
   displayedColumns: string[] = ["title", "description", "action"];
-
+  isOpen = false;
     
     ngOnInit() {
       this.userService.getUserProfile().subscribe(res => {
@@ -31,6 +31,12 @@ export class DashboardComponent implements OnInit {
   openSidebar(e : Event) {
     const $target = (document.querySelector("#sidebarContent")) as HTMLElement ;
     $target.classList.toggle('open');
+    if(this.isOpen) {
+      this.isOpen = false;
+    }
+    else {
+      this.isOpen = true;
+    }
   }
 
   getTasks() {
@@ -43,7 +49,6 @@ export class DashboardComponent implements OnInit {
   deleteTask(event: Event) {
     const target = (event.target as HTMLElement);
     const taskId = target.getAttribute('name');
-    console.log(taskId);
     this.userService.deleteTask(taskId).subscribe(res => {
       alert('task has been deleted');
       this.getTasks();
@@ -52,6 +57,12 @@ export class DashboardComponent implements OnInit {
 
   addTask() {
     this.isCreating = true;
+    if(this.isOpen) {
+      this.isOpen = false;
+    }
+    else {
+      this.isOpen = true;
+    }
     const $target = (document.querySelector("#sidebarContent")) as HTMLElement ;
     $target.classList.toggle('open');
   }

@@ -1,8 +1,16 @@
 <app-navbar></app-navbar>
 <div class="sidebar">
     <div class="sidebar-burger" data-target="sidebarContent" (click)="openSidebar($event)">
-        <mat-icon>arrow_forward_ios</mat-icon>
+      <div *ngIf="isOpen; then open else close"></div>
+        <ng-template #open>
+          <mat-icon>close</mat-icon>
+        </ng-template>
+        <ng-template #close>
+          <mat-icon>more</mat-icon>
+        </ng-template>
+        
     </div>
+    
     <div id="sidebarContent" class="sidebar-content">
         <h3>{{name}}</h3>
         <a type="button" class="button" (click)="addTask()">Crear</a>
@@ -15,15 +23,15 @@
     <ng-template #showData>
         <table mat-table [dataSource]="tasks" class="mat-elevation-z8">
           <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <th mat-header-cell *matHeaderCellDef>Titulo</th>
             <td mat-cell *matCellDef="let element">{{element.title}}</td>
           </ng-container>
           <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <th mat-header-cell *matHeaderCellDef>Descripción</th>
             <td mat-cell *matCellDef="let element">{{element.description}}</td>
           </ng-container>
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th mat-header-cell *matHeaderCellDef>Acción</th>
             <td mat-cell *matCellDef="let element">
               <mat-icon style="cursor: pointer;" attr.name="{{element._id}}" (click)="deleteTask($event)" class="icon-button">delete</mat-icon>
             </td>
