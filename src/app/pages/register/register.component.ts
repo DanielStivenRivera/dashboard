@@ -12,34 +12,28 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class RegisterComponent implements OnInit {
 
-  registerForm: FormGroup;
+  
 
-  constructor(private userService: UserService, private router: Router, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private router: Router) {
 
-    this.registerForm = formBuilder.group({
-      fullName: ['', Validators.required],
-      email: ['', Validators.email, Validators.required],
-      password: ['', Validators.required]
-    })
+  
 
    }
 
    user = new CreateUserDTO();
 
   ngOnInit(): void {
+    const access_token = localStorage.getItem('access_token');
+     if(access_token != null) {
+       if(this.userService.isExpired()) {
+         localStorage.removeItem('access_token');
+       }
+       else {
+         this.router.navigateByUrl('/dashboard');
+       }
+     }
   }
 
-  get fullName() {
-    return this.registerForm.get('fullName');
-  }
-
-  get password() {
-    return this.registerForm.get('password');
-  }
-
-  get email() {
-    return this.registerForm.get('email');
-  }
 
   register(form: NgForm) {
     const fullName = form.value.name;
